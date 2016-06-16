@@ -4,6 +4,8 @@
   "description": "A REST API for note-taking.",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "node_modules/.bin/supervisor app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +19,10 @@
   },
   "homepage": "https://github.com/LiberalOtaku/meganote-server#readme",
   "dependencies": {
+    "dotenv": "^2.0.0",
     "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "supervisor": "^0.11.0"
   }
 }
