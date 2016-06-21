@@ -68,6 +68,18 @@ app.put('/:id', function(request, response) {
     });
 });
 
+app.delete('/:id', function(request, response) {
+  Note
+    .findOneAndRemove({
+      _id: request.params.id
+    }, function(note) {
+      response.json({
+        message: 'That note has been deleted.',
+        note: note
+      });
+    });
+});
+
 app.listen(3030, function() {
   console.log('Listening on http://localhost:3030...');
 });
