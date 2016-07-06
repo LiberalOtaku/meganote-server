@@ -59,12 +59,17 @@ app.put('/:id', function(request, response) {
       note.body_html = request.body.note.body_html;
       note
         .save()
-        .then(function() {
-          response.json({
-            message: 'Your changes have been saved.',
-            note: note
-          });
-        });
+        .then(
+          function() {
+            response.json({
+              message: 'Your changes have been saved.',
+              note: note
+            });
+          },
+          function(result) {
+            response.json({ message: 'Oops, something went wrong!' });
+          }
+        );
     });
 });
 
