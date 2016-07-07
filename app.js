@@ -85,6 +85,12 @@ app.delete('/:id', function(request, response) {
     });
 });
 
+app.post('/users', function(request, response) {
+  response.json({
+    message: "User added successfully!"
+  });
+});
+
 app.listen(3030, function() {
   console.log('Listening on http://localhost:3030...');
 });
