@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 var User = require('../models/user');
 
 router.post('/', function(request, response) {
@@ -21,9 +22,13 @@ router.post('/', function(request, response) {
     .save()
     .then(
       userData => {
+        var token = jwt.sign(userData._id, process.env.JWT_SECRET, {
+          expiresIn: 60 * 60 * 24 // seconds
+        });
         response.json({
           message: "User added successfully!",
-          user: userData
+          user: userData,
+          authToken: token
         });
       }
     );
