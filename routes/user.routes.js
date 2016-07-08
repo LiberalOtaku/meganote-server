@@ -8,12 +8,14 @@ router.post('/', function(request, response) {
   });
   user
     .save()
-    .then(function(userData) {
-      response.json({
-        message: "User added successfully!",
-        user: userData
-      });
-    });
+    .then(
+      userData => {
+        response.json({
+          message: "User added successfully!",
+          user: userData
+        });
+      }
+    );
 });
 
 module.exports = router;
