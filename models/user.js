@@ -25,6 +25,13 @@ userSchema.pre('save', function(next) {
   next();
 });
 
+userSchema.methods.toJSON = function() {
+  var user = this.toObject();
+  delete user.password_digest;
+  delete user.__v;
+  return user;
+};
+
 var User = db.model('User', userSchema);
 
 module.exports = User;
