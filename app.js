@@ -4,15 +4,11 @@ var db = require('./config/db');
 var User = require('./models/user');
 var bodyParser = require('body-parser');
 var noteRoutes = require('./routes/note.routes');
+var headers = require('./middleware/headers');
 
 var app = express();
 
-app.use(function(request, response, next) {
-  response.header('Access-Control-Allow-Origin', '*');
-  response.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
-  response.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-  next();
-});
+app.use(headers);
 
 app.use(bodyParser.json());
 
