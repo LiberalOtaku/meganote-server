@@ -10,6 +10,10 @@ var userSchema = db.Schema({
     required: true,
     unique: true,
   },
+  password_digest: {
+    type: String,
+    required: true,
+  },
   updated_at: {
     type: Date,
     default: Date.now,
