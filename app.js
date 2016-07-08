@@ -1,6 +1,7 @@
 require('dotenv').load();
 var express = require('express');
 var db = require('./config/db');
+var User = require('./models/user');
 var Note = require('./models/note');
 var bodyParser = require('body-parser');
 
@@ -86,9 +87,18 @@ app.delete('/:id', function(request, response) {
 });
 
 app.post('/users', function(request, response) {
-  response.json({
-    message: "User added successfully!"
+  var user = new User({
+    name: request.body.user.name,
+    username: request.body.user.username
   });
+  user
+    .save()
+    .then(function(userData) {
+      response.json({
+        message: "User added successfully!",
+        user: userData
+      });
+    });
 });
 
 app.listen(3030, function() {
