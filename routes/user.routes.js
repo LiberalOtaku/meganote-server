@@ -34,6 +34,32 @@ router.post('/', function(request, response) {
     );
 });
 
+router.put('/:id', (request, response) => {
+  User
+    .findOne({ _id: request.params.id })
+    .then(
+      user => {
+        if (user) {
+          // User exists
+          user.name = request.body.user.name;
+          user.username = request.body.user.username;
+          user
+            .save()
+            .then(
+              // On success
+              () => response.json({ user }),
+              // On failure
+              () => response.status(422).json({ message: "Unable to update user." })
+            );
+        }
+        else {
+          // User does not exist
+          response.status(404).json({ message: "User not found." });
+        }
+      }
+    );
+});
+
 module.exports = router;
 
 ////////////////////
