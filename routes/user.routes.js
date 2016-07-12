@@ -22,7 +22,7 @@ router.post('/', function(request, response) {
     .save()
     .then(
       userData => {
-        var token = jwt.sign(userData._id, process.env.JWT_SECRET, {
+        var token = jwt.sign({ _id: userData._id }, process.env.JWT_SECRET, {
           expiresIn: 60 * 60 * 24 // seconds
         });
         response.json({

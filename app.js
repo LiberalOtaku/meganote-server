@@ -7,10 +7,12 @@ var noteRoutes = require('./routes/note.routes');
 var userRoutes = require('./routes/user.routes');
 var sessionRoutes = require('./routes/session.routes');
 var headers = require('./middleware/headers');
+var auth = require('./middleware/auth');
 
 var app = express();
 
 app.use(headers);
+app.use(auth);
 
 app.use(bodyParser.json());
 
