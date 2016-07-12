@@ -1,5 +1,4 @@
 var router = require('express').Router();
-var Note = require('../models/note');
 
 router.get('/', (request, response) => {
   response.json(request.user.notes);
