@@ -19,7 +19,13 @@ router.post('/', function(request, response) {
   });
 
   user
-    .save()
+    .save(
+      error => {
+        if (error) {
+          response.status(422).json(error);
+        }
+      }
+    )
     .then(
       userData => {
         var token = jwt.sign({ _id: userData._id }, process.env.JWT_SECRET, {
