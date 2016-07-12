@@ -1,74 +1,67 @@
 var router = require('express').Router();
 var Note = require('../models/note');
 
-router.get('/', function(request, response) {
-  Note
-    .find()
-    .sort({ updated_at: -1 })
-    .then(function(notes) {
-      response.json(notes);
-    });
+router.get('/', (request, response) => {
+  response.json(request.user.notes);
 });
 
-router.get('/:id', function(request, response) {
-  Note
-    .findOne({
-      _id: request.params.id
-    })
-    .then(function(noteData) {
-      response.json(noteData);
-    });
+router.get('/:id', (request, response) => {
+  response.json(request.user.notes.id(request.params.id));
 });
 
-router.post('/', function(request, response) {
-  var note = new Note({
+router.post('/', (request, response) => {
+  var note = request.user.notes.create({
     title: request.body.note.title,
     body_html: request.body.note.body_html
   });
-  note
+  request.user.notes.push(note);
+  request.user
     .save()
-    .then(function(noteData) {
-      response.json({
-        message: "Note added successfully!",
-        note: noteData
-      });
-    });
+    .then(
+      userData => {
+        response.json({
+          message: "Note added successfully!",
+          note: note,
+        });
+      }
+    );
 });
 
-router.put('/:id', function(request, response) {
-  Note
-    .findOne({
-      _id: request.params.id
-    })
-    .then(function(note) {
-      note.title = request.body.note.title;
-      note.body_html = request.body.note.body_html;
-      note
-        .save()
-        .then(
-          function() {
-            response.json({
-              message: 'Your changes have been saved.',
-              note: note
-            });
-          },
-          function(result) {
-            response.json({ message: 'Oops, something went wrong!' });
-          }
-        );
-    });
+router.put('/:id', (request, response) => {
+  var note = request.user.notes.id(request.params.id);
+  note.title = request.body.note.title;
+  note.body_html = request.body.note.body_html;
+  note.updated_at = Date.now();
+
+  request.user
+    .save()
+    .then(
+      () => {
+        response.json({
+          message: 'Your changes have been saved.',
+          note: note,
+        });
+      },
+      result => {
+        response.json({ message: 'Oops, something went wrong!' });
+      }
+    );
 });
 
-router.delete('/:id', function(request, response) {
-  Note
-    .findOneAndRemove({
-      _id: request.params.id
-    }, function(note) {
-      response.json({
-        message: 'That note has been deleted.',
-        note: note
-      });
-    });
+router.delete('/:id', (request, response) => {
+  var note = request.user.notes.id(request.params.id);
+  note.remove();
+
+  request.user
+    .save()
+    .then(
+      () => {
+        response.json({
+          message: 'That note has been deleted.',
+          note: note
+        });
+      }
+    );
 });
 
 module.exports = router;
