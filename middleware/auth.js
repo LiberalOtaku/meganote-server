@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
   if (token) {
     // Verify token
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedPayload) => {
-      if (!decodedPayload) {
+      if (err) {
         res.status(401).json({ message: 'Authentication required.' });
         return;
       }
