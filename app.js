@@ -12,7 +12,7 @@ var headers = require('./middleware/headers');
 var auth = require('./middleware/auth');
 
 var app = express();
-app.set('port', (process.env.port || 3030));
+app.set('port', (process.env.PORT || 3030));
 
 app.use(headers);
 app.use(auth);
