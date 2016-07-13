@@ -4,9 +4,15 @@ var jwt = require('jsonwebtoken');
 var User = require('../models/user');
 
 router.post('/', function(request, response) {
-  if (!passwordsPresent(request.body.user) || !passwordsMatch(request.body.user)) {
+  if (!passwordsPresent(request.body.user)) {
     response.status(422).json({
-      status: 422,
+      message: 'A password is required.',
+    });
+    return;
+  }
+
+  if (!passwordsMatch(request.body.user)) {
+    response.status(422).json({
       message: 'Passwords do not match!',
     });
     return;
