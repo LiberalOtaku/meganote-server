@@ -10,41 +10,26 @@ router.get('/:id', (request, response) => {
 
 router.post('/', (request, response) => {
   var note = request.user.notes.create({
-    title: request.body.note.title,
-    body_html: request.body.note.body_html
+    title: request.body.title,
+    body_html: request.body.body_html
   });
   request.user.notes.push(note);
   request.user
     .save()
-    .then(
-      userData => {
-        response.json({
-          message: "Note added successfully!",
-          note: note,
-        });
-      }
-    );
+    .then(note => response.json(note));
 });
 
 router.put('/:id', (request, response) => {
   var note = request.user.notes.id(request.params.id);
-  note.title = request.body.note.title;
-  note.body_html = request.body.note.body_html;
+  note.title = request.body.title;
+  note.body_html = request.body.body_html;
   note.updated_at = Date.now();
 
   request.user
     .save()
     .then(
-      () => {
-        response.json({
-          message: 'Your changes have been saved.',
-          note: note,
-        });
-      },
-      result => {
-        response.json({ message: 'Oops, something went wrong!' });
-      }
-    );
+      () => response.json(note),
+      result => response.json({ message: 'Oops, something went wrong!' }));
 });
 
 router.delete('/:id', (request, response) => {
@@ -53,14 +38,7 @@ router.delete('/:id', (request, response) => {
 
   request.user
     .save()
-    .then(
-      () => {
-        response.json({
-          message: 'That note has been deleted.',
-          note: note
-        });
-      }
-    );
+    .then(() => response.json(note));
 });
 
 module.exports = router;

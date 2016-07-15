@@ -35,9 +35,18 @@ userSchema.methods.toJSON = function() {
   return user;
 };
 
-userSchema.methods.authenticate = function(password, callback) {
-  bcrypt.compare(password, this.password_digest, (err, isMatch) => {
-    callback(isMatch);
+userSchema.methods.authenticate = function(password) {
+  const user = this;
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, this.password_digest, (err, isMatch) => {
+      if (isMatch) {
+        resolve(user);
+      }
+      else {
+        reject(err);
+      }
+    });
+
   });
 };
 
